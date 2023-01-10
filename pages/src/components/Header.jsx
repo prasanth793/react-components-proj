@@ -13,7 +13,7 @@ const Header = () => {
                             Silicon Valley Code Camp
                         </h4>
                     </div>
-                    <div className="text-dark">
+                    <div className="text-info">
                         Hello Mr.Smith &nbsp;&nbsp;
                         <span>
                             <a href="#">Sign-Out</a>

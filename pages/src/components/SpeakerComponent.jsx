@@ -13,6 +13,17 @@ const SpeakerImageComponent = ({id,first,last}) => {
     );
 }
 
+const SpeakerFavorite = ({favorite}) => {
+    return(
+        <div className="action padB1">
+            <span>
+                <i className={favorite===true?"fa fa-star orange":"fa fa-star-o orange"}/>
+                {" "}Favourite{" "}
+            </span>
+        </div>
+    )
+}
+
 const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite}) => {
     //  const {} = speakerProps;
     return(
@@ -22,6 +33,9 @@ const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite}) =
                                 {first} {last}
                             </h3>
                         </div>
+                        <SpeakerFavorite favorite={favorite}>
+                            
+                        </SpeakerFavorite>
                         <div>
                             <p className="card-description">{bio}</p>
                             <div className="social d-flex flex-row mt-4">
@@ -40,7 +54,7 @@ const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite}) =
 }
 
 
-const SpeakerComponent = ({speakerProps}) => {
+const SpeakerComponent = ({speakerProps,showSessions}) => {
     const {id,first,last,company,bio,twitterHandle,favorite,sessions} = speakerProps;
     return(
         <div>
@@ -51,7 +65,7 @@ const SpeakerComponent = ({speakerProps}) => {
                 </div>
             </div>
             <div>
-                <SessionComponent sessionProps={sessions}/>
+               {showSessions? <SessionComponent sessionProps={sessions}/> : null} 
             </div>
         </div>
         
