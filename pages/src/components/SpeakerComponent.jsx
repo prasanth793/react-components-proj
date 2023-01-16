@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import {data} from "../../../SpeakerData";
+import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 import SessionComponent from "./SessionComponent";
 
 const SpeakerImageComponent = ({id,first,last}) => {
     return(
-        <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300">
+        <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300 container-fluid">
                         <img 
                         className="contain-fit"
                         src={`/images/speaker-${id}.jpg`}
@@ -13,10 +15,10 @@ const SpeakerImageComponent = ({id,first,last}) => {
     );
 }
 
-const SpeakerFavorite = ({favorite}) => {
+const SpeakerFavorite = ({favorite, onFavoriteToggle}) => {
     return(
         <div className="action padB1">
-            <span>
+            <span onClick={onFavoriteToggle}>
                 <i className={favorite===true?"fa fa-star orange":"fa fa-star-o orange"}/>
                 {" "}Favourite{" "}
             </span>
@@ -24,16 +26,16 @@ const SpeakerFavorite = ({favorite}) => {
     )
 }
 
-const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite}) => {
+const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite,onFavoriteToggle}) => {
     //  const {} = speakerProps;
     return(
-        <div className="speaker-info">
+        <div className="speaker-info container-fluid">
                         <div className="d-flex justify-content-between mb-3">
                             <h3 className="text-truncate w-200">
                                 {first} {last}
                             </h3>
                         </div>
-                        <SpeakerFavorite favorite={favorite}>
+                        <SpeakerFavorite favorite={favorite} onFavoriteToggle={onFavoriteToggle}>
                             
                         </SpeakerFavorite>
                         <div>
@@ -54,22 +56,22 @@ const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite}) =
 }
 
 
-const SpeakerComponent = ({speakerProps,showSessions}) => {
+const SpeakerComponent = ({speakerProps,onFavoriteToggle}) => {
     const {id,first,last,company,bio,twitterHandle,favorite,sessions} = speakerProps;
+
+    const {showSessions} = useContext(SpeakerFilterContext);
     return(
-        <div>
+        <div className="container-fluid">
             <div className="card card-height p-4 mt-4">
                 <div>
                     <SpeakerImageComponent {...speakerProps}/>
-                    <SpeakerInfoComponent {...speakerProps}/>
+                    <SpeakerInfoComponent {...speakerProps} onFavoriteToggle={onFavoriteToggle}/>
                 </div>
             </div>
-            <div>
+            <div className="container-fluid">
                {showSessions? <SessionComponent sessionProps={sessions}/> : null} 
             </div>
         </div>
-        
-        
     )
 }
 

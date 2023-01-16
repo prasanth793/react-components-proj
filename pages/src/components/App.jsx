@@ -1,18 +1,22 @@
 import Header from "./Header";
+import Layout from "./Layout";
 import SpeakersToolBar from "./SpeakersToolBar";
-import { useState } from "react";
+import { useState,createContext } from "react";
 import SpeakersListComponent from "./SpeakersListComponent";
+import { SpeakerFilterProvider } from "../contexts/SpeakerFilterContext";
+
+
 
 const App = () => {
-
-    const [theme, setTheme] = useState("light");
-    const [showSessions, setShowSessions] = useState(true);
+  //  const [showSessions, setShowSessions] = useState(true);
     return(
-    <div className={theme==="light"?"container-fluid light":"container-fluid dark"}>
-        <Header/>
-        <SpeakersToolBar theme={theme} setTheme={setTheme} showSessions={showSessions} setShowSessions={setShowSessions}/>
-        <SpeakersListComponent showSessions={showSessions}/>
-    </div>
+        <Layout startingTheme="light">
+            <SpeakerFilterProvider startingShowSessions={false} startingEventYear="2021">
+                <Header/>
+                <SpeakersToolBar/>
+                <SpeakersListComponent />
+            </SpeakerFilterProvider>
+        </Layout>
     )
 }
 

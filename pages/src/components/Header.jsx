@@ -9,7 +9,7 @@ const Header = () => {
                          <img alt = "SVCC home page" src="/images/SVCCLogo.png"/>
                     </div>       
                     <div className="light">
-                        <h4 className="header-title">
+                        <h4 className="text-info">
                             Silicon Valley Code Camp
                         </h4>
                     </div>
