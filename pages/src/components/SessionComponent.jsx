@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import {data} from "../../../SpeakerData";
+import { SpeakerContext } from "../contexts/SpeakerContext";
 
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 
@@ -14,12 +15,13 @@ const SessionsComponent = ({title,room}) => {
    )
 }
 
-function SessionsListComponent ({sessionsProps}) {
+function SessionsListComponent () {
+    const {speaker:{sessions}} = useContext(SpeakerContext);
    // const {id,first,last,company,bio,twitterHandle,favorite,sessions} = sessionsProps;
    const {eventYear} = useContext(SpeakerFilterContext);
    return(
        <div className="sessionBox card h-250">
-        {sessionsProps.filter(function(session){
+        {sessions.filter(function(session){
             return session.eventYear === eventYear;
         }).map(function(session){
             return(
@@ -35,10 +37,12 @@ function SessionsListComponent ({sessionsProps}) {
    );
 }
 
-const SessionComponent = ({sessionProps}) => {
+const SessionComponent = () => {
+
+    
     
     return(
-        <SessionsListComponent sessionsProps = {sessionProps}/>
+        <SessionsListComponent />
     );
 
 }

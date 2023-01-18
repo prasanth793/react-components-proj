@@ -20,7 +20,7 @@ function useSpeakerFilter(startingShowSessions=true,startingEventYear){
 
     // }                                                                            
 
-    return {showSessions,setShowSessions,eventYear,setEventYear,searchQuery,setSearchQuery,EVENT_YEAR }
+    return {showSessions,setShowSessions,eventYear,setEventYear,searchQuery,setSearchQuery,EVENT_YEAR}
 }
 
 

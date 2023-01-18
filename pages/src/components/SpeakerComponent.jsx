@@ -1,9 +1,13 @@
 import { useContext } from "react";
 import {data} from "../../../SpeakerData";
+import { SpeakerContext, SpeakerProvider } from "../contexts/SpeakerContext";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 import SessionComponent from "./SessionComponent";
+import SpeakerDelete from "./SpeakerDelete";
 
-const SpeakerImageComponent = ({id,first,last}) => {
+const SpeakerImageComponent = () => {
+
+    const {speaker:{id,first,last}} = useContext(SpeakerContext);
     return(
         <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300 container-fluid">
                         <img 
@@ -15,10 +19,12 @@ const SpeakerImageComponent = ({id,first,last}) => {
     );
 }
 
-const SpeakerFavorite = ({favorite, onFavoriteToggle}) => {
+const SpeakerFavorite = () => {
+    const {updateRecord,speaker:{favorite}} = useContext(SpeakerContext);
+    const {speaker} = useContext(SpeakerContext)
     return(
         <div className="action padB1">
-            <span onClick={onFavoriteToggle}>
+            <span onClick={()=>updateRecord({...speaker,favorite:!speaker.favorite})}>
                 <i className={favorite===true?"fa fa-star orange":"fa fa-star-o orange"}/>
                 {" "}Favourite{" "}
             </span>
@@ -26,8 +32,10 @@ const SpeakerFavorite = ({favorite, onFavoriteToggle}) => {
     )
 }
 
-const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite,onFavoriteToggle}) => {
+const SpeakerInfoComponent = () => {
     //  const {} = speakerProps;
+    const {speaker} = useContext(SpeakerContext);
+    const {id,first, last, favorite,company,bio,twitterHandle} = speaker;
     return(
         <div className="speaker-info container-fluid">
                         <div className="d-flex justify-content-between mb-3">
@@ -35,9 +43,7 @@ const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite,onF
                                 {first} {last}
                             </h3>
                         </div>
-                        <SpeakerFavorite favorite={favorite} onFavoriteToggle={onFavoriteToggle}>
-                            
-                        </SpeakerFavorite>
+                        <SpeakerFavorite/>
                         <div>
                             <p className="card-description">{bio}</p>
                             <div className="social d-flex flex-row mt-4">
@@ -56,22 +62,26 @@ const SpeakerInfoComponent = ({first,last,company,bio,twitterHandle,favorite,onF
 }
 
 
-const SpeakerComponent = ({speakerProps,onFavoriteToggle}) => {
-    const {id,first,last,company,bio,twitterHandle,favorite,sessions} = speakerProps;
+const SpeakerComponent = ({speaker,updateRecord,insertRecord,deleteRecord}) => {
+    //const {id,first,last,company,bio,twitterHandle,favorite,sessions} = speakerProps;
 
     const {showSessions} = useContext(SpeakerFilterContext);
     return(
-        <div className="container-fluid">
-            <div className="card card-height p-4 mt-4">
+        <SpeakerProvider speaker={speaker} updateRecord={updateRecord} insertRecord={insertRecord} deleteRecord={deleteRecord}>
+            <div className="container-fluid">
+                <div className="card card-height p-4 mt-4">
+                    <div>
+                        <SpeakerImageComponent/>
+                        <SpeakerInfoComponent />
+
+                    </div>
+                </div>
                 <div>
-                    <SpeakerImageComponent {...speakerProps}/>
-                    <SpeakerInfoComponent {...speakerProps} onFavoriteToggle={onFavoriteToggle}/>
+                   {showSessions? <SessionComponent/> : null} 
+                   <SpeakerDelete/>
                 </div>
             </div>
-            <div className="container-fluid">
-               {showSessions? <SessionComponent sessionProps={sessions}/> : null} 
-            </div>
-        </div>
+        </SpeakerProvider>
     )
 }
 

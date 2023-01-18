@@ -1,4 +1,5 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect, useContext, } from 'react';
+import { SpeakerListContext } from '../contexts/SpeakerListContext';
 
 
 export  const REQUEST_STATUS={
@@ -8,19 +9,22 @@ export  const REQUEST_STATUS={
 };
 
 function useReactProperties(time,initialData) {
+  //  const {initialData,setInitialData} = useContext(SpeakerListContext);
     const [status, setStatus] = useState(REQUEST_STATUS.LOADING)
     const [error,setError] = useState("");
-    const [data,setData] =useState([]);
+    const [data,setData] =useState(initialData);
 
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve,ms));
 
-    const originalRecords = initialData;
+    
+
+    //const originalRecords = initialData;
 
   
     useEffect(() => {
         async function myFunc(time){
             try{
-                await delay(time);
+               await delay(time);
           //   throw "Failed Loading"
                 setStatus(REQUEST_STATUS.SUCCESS)
                 setData(initialData);
@@ -35,46 +39,54 @@ function useReactProperties(time,initialData) {
         myFunc(time);       
     },[]) //we are passing empty array as 2nd arg to useEffect to tell that the useEffect func should be called only once when it renders for the first time
 
-    function updateRecord(updatedRecord){
+    function updateRecord(record){
 
         const newRecords = data.map(function(rec){
-            return rec.id===updatedRecord.id?updatedRecord:rec;
+            return rec.id===record.id?record:rec;
         });
 
-        async function delayFunc(){
+        setData(newRecords)
 
-            try{
-                setData(newRecords);
-                await delay(time);
-                throw "Error:";
+        // async function delayFunc(){
+
+        //     try{
+        //         setData(newRecords);
+        //         await delay(time);
+        //         throw "Error:";
                 
-            }
-            catch(e){
-                console.log("Error: "+e);
-                setData(originalRecords)
+        //     }
+        //     catch(e){
+        //         console.log("Error: "+e);
+        //         setData(originalRecords)
 
-            }
+        //     }
             
-        }
+        // }
 
-        delayFunc();
+        // delayFunc();
 
-        // const speakerRecPrevious = data.find(function (rec){
-        //     return rec.id === id;
-        // });
+    }
 
-        // const speakerRecUpdated = {...speakerRecPrevious,favorite:!speakerRecPrevious.favorite}
+    function insertRecord(record){
 
-        // const speakerRecNew = speakersData.map(function (rec){
-        //     return rec.id === id?speakerRecUpdated:rec
-        // });
+    const newData = [record,...initialData];
+       setData(newData);
 
-        // setSpeakersData(speakerRecNew);
+    }
+
+    function deleteRecord(record){
+
+
+        const newRecords = data.filter(function(rec){
+            return rec.id!==record.id;
+        });
+
+        setData(newRecords);
 
     }
 
     return {
-        status,error,data,updateRecord
+        status,error,data,updateRecord,insertRecord,deleteRecord
     }
 }
 
