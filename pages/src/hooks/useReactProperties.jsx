@@ -1,5 +1,6 @@
 import { useState,useEffect, useContext, } from 'react';
 import { SpeakerListContext } from '../contexts/SpeakerListContext';
+import axios from 'axios';
 
 
 export  const REQUEST_STATUS={
@@ -17,17 +18,23 @@ function useReactProperties(time,initialData) {
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve,ms));
 
     
-
+ 
     //const originalRecords = initialData;
 
   
     useEffect(() => {
         async function myFunc(time){
             try{
+                var origRec = [];
                await delay(time);
           //   throw "Failed Loading"
+          axios.create(
+            {
+                baseURL:`http://localhost:8080/all`
+            }
+            ).get('/').then(res=>origRec.push(res));
                 setStatus(REQUEST_STATUS.SUCCESS)
-                setData(initialData);
+                setData(origRec);
             }
             catch(e){
                 setStatus(REQUEST_STATUS.FAILED)
