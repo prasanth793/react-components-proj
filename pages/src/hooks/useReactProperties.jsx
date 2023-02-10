@@ -79,16 +79,17 @@ function useReactProperties(time,initialData) {
 
     function insertRecord(record){
 
-        axios.post('http://localhost:8080/speakers/create',
-        {
-            firstName: "Leo",
-            lastName: "Messi",
-            favourite: false,
-            company: "Arg",
-            twitterHandle: "amk_793"
-        }).then(res=>{
-        console.log("Created : " + res.data )
-       })
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/speakers/create',
+            data: {
+                first: "Fred",
+                last: "Routez",
+                favorite: false,
+                company: "CTS",
+                twitterHandle: "amk_793"
+            }
+          });
 
 
     // const newData = [record,...initialData];
