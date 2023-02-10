@@ -21,20 +21,23 @@ function useReactProperties(time,initialData) {
  
     //const originalRecords = initialData;
 
+    const baseUrl = "http://localhost:8080";
+
   
     useEffect(() => {
         async function myFunc(time){
             try{
-                var origRec = [];
                await delay(time);
           //   throw "Failed Loading"
-          axios.create(
-            {
-                baseURL:`http://localhost:8080/all`
-            }
-            ).get('/').then(res=>origRec.push(res));
+          axios.get(`${baseUrl}/all`).then(res=>{
+                console.log(res);
+                setData(res.data);
+                
+            });
+
+            console.log("data: " + data)
                 setStatus(REQUEST_STATUS.SUCCESS)
-                setData(origRec);
+                //setData(origRec);
             }
             catch(e){
                 setStatus(REQUEST_STATUS.FAILED)
@@ -76,8 +79,20 @@ function useReactProperties(time,initialData) {
 
     function insertRecord(record){
 
-    const newData = [record,...initialData];
-       setData(newData);
+        axios.post('http://localhost:8080/speakers/create',
+        {
+            firstName: "Leo",
+            lastName: "Messi",
+            favourite: false,
+            company: "Arg",
+            twitterHandle: "amk_793"
+        }).then(res=>{
+        console.log("Created : " + res.data )
+       })
+
+
+    // const newData = [record,...initialData];
+    //    setData(newData);
 
     }
 
